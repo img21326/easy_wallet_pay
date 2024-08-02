@@ -1,12 +1,14 @@
 require 'openssl'
+require 'base64'
 
 module EasyCardPay
   class Utils
     def self.sign(plaintext, secret_key)
-      data = plaintext.encode('UTF-8')
-      key = [secret_key].pack('H*')
-      hash_result = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), key, data)
-      hash_result.upcase
+      input = plaintext.to_json.encode('UTF-8')
+      sc_id = [secret_key].pack('H*')
+      alg = OpenSSL::Digest.new('SHA256')
+      sha256_hmac = OpenSSL::HMAC.digest(alg, sc_id, input)
+      sha256_hmac.unpack1('H*')
     end
   end
 end
