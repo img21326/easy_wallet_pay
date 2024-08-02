@@ -1,7 +1,7 @@
 require 'securerandom'
-RSpec.describe PxPay do
+RSpec.describe EasyCardPay do
   let!(:ec_config) do
-    config = PxPay::Config.new
+    config = EasyCardPay::Config.new
     config.account = ENV['STORE_ID']
     config.store_name = 'S0006787'
     config.secret_key = ENV['SECRET_KEY']
@@ -9,7 +9,7 @@ RSpec.describe PxPay do
   end
 
   let!(:pos_config) do
-    config = PxPay::Config.new
+    config = EasyCardPay::Config.new
     config.account = ENV['POS_STORE_ID']
     config.store_name = 'S0006786'
     config.secret_key = ENV['POS_SECRET_KEY']
@@ -19,7 +19,7 @@ RSpec.describe PxPay do
   let(:pos_order_id) { 222_223_333 }
 
   # it 'online_pay' do
-  #   request = PxPay::Request::Online::Pay.new({
+  #   request = EasyCardPay::Request::Online::Pay.new({
   #                                               order_id: ec_order_id,
   #                                               amount: 1,
   #                                               device_type: :pc,
@@ -34,7 +34,7 @@ RSpec.describe PxPay do
   # end
 
   # it 'pos_pay' do
-  #   request = PxPay::Request::Pos::Pay.new({
+  #   request = EasyCardPay::Request::Pos::Pay.new({
   #                                            store_id: 1,
   #                                            store_name: 'weiby_test',
   #                                            pos_id: 1,
@@ -50,7 +50,7 @@ RSpec.describe PxPay do
   # end
 
   # it 'pos_query' do
-  #   request = PxPay::Request::Pos::Query.new({
+  #   request = EasyCardPay::Request::Pos::Query.new({
   #                                              trade_number: '1#1'
   #                                            })
 

@@ -1,7 +1,7 @@
-RSpec.describe PxPay::Request::Pos::Refund do
+RSpec.describe EasyCardPay::Request::Pos::Refund do
   it 'basic' do
     time = Time.now
-    request = PxPay::Request::Pos::Refund.new(
+    request = EasyCardPay::Request::Pos::Refund.new(
       store_id: '123',
       store_name: 'store_name',
       pos_id: '456',

@@ -1,7 +1,7 @@
-RSpec.describe PxPay::Request::Pos::Reversal do
+RSpec.describe EasyCardPay::Request::Pos::Reversal do
   it 'basic' do
     time = Time.now
-    request = PxPay::Request::Pos::Reversal.new(
+    request = EasyCardPay::Request::Pos::Reversal.new(
       store_id: '123',
       store_name: 'store_name',
       pos_id: '456',

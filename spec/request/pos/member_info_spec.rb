@@ -1,6 +1,6 @@
-RSpec.describe PxPay::Request::Pos::MemberInfo do
+RSpec.describe EasyCardPay::Request::Pos::MemberInfo do
   it 'basic' do
-    request = PxPay::Request::Pos::MemberInfo.new(
+    request = EasyCardPay::Request::Pos::MemberInfo.new(
       pay_token: 'abc'
     )
     hash = request.send(:to_hash)

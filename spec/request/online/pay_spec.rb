@@ -1,6 +1,6 @@
-RSpec.describe PxPay::Request::Online::Pay do
+RSpec.describe EasyCardPay::Request::Online::Pay do
   it 'basic' do
-    request = PxPay::Request::Online::Pay.new(
+    request = EasyCardPay::Request::Online::Pay.new(
       order_id: '123',
       amount: 100,
       device_type: :pc,
