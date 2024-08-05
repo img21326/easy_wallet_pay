@@ -1,4 +1,4 @@
-RSpec.describe EasyCardPay::Response::Pos::Pay do
+RSpec.describe EasyWalletPay::Response::Pos::Pay do
   let(:raw) do
     class Raw
       def status
@@ -10,7 +10,7 @@ RSpec.describe EasyCardPay::Response::Pos::Pay do
   it 'basic' do
     json_string = '{ "mer_trade_no": "202101230000001", "gate_trade_no": null, "px_trade_no": "PXO023892398239", "status_code": "0000", "status_message": "交易成功", "amount": 300, "trade_amount": 277, "discount_amount": 10, "px_trade_time": "20210710143259", "invo_carrier": "/NFVIAZP", "mem_card_no": "wisjnf3282o102", "pay_tool_info": { "pay_tool": 1, "tool_name": "華泰銀行", "identity": "123456******7890" }, "marketing": [ { "marketing_code": "aaaaaabbbbbbcccccc", "discount": 10 }, { "marketing_code": "aaaaaabbbbbbcccccc", "discount": 0 }, { "marketing_code": "ffffff777777dddddd", "discount": 3 } ] }'
     json_data = JSON.parse(json_string)
-    res = EasyCardPay::Response::Pos::Pay.new(json_data, raw)
+    res = EasyWalletPay::Response::Pos::Pay.new(json_data, raw)
     expect(res.success?).to be true
     expect(res.message).to eq('交易成功')
     expect(res.trade_number).to eq('202101230000001')

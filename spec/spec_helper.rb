@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'easy_card_pay'
+require 'easy_wallet_pay'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

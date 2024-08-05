@@ -1,4 +1,4 @@
-RSpec.describe EasyCardPay::Response::Online::Refund do
+RSpec.describe EasyWalletPay::Response::Online::Refund do
   let(:raw) do
     class Raw
       def status
@@ -11,7 +11,7 @@ RSpec.describe EasyCardPay::Response::Online::Refund do
   it 'basic' do
     json_string = '{ "status_code": "0000", "status_message": "交易成功", "mer_trade_no":"202101230000002", "px_trade_no": "PXO023892398239", "refund_mer_trade_no":"202101230000001", "refund_px_trade_no": "PXRO023892398239", "trade_time":"20210101093922", "amount": 300, "trade_amount": 277, "discount_amount": 23 }'
     json_data = JSON.parse(json_string)
-    res = EasyCardPay::Response::Online::Refund.new(json_data, raw)
+    res = EasyWalletPay::Response::Online::Refund.new(json_data, raw)
     expect(res.success?).to be true
     expect(res.message).to eq('交易成功')
     expect(res.order_id).to eq('202101230000002')

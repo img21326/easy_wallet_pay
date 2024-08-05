@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-# Specify your gem's dependencies in easy_card_pay.gemspec
+# Specify your gem's dependencies in easy_wallet_pay.gemspec
 gemspec
 
 gem "rake", "~> 13.0"

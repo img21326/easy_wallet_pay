@@ -1,6 +1,6 @@
-RSpec.describe EasyCardPay::Request::Online::Refund do
+RSpec.describe EasyWalletPay::Request::Online::Refund do
   it 'basic' do
-    request = EasyCardPay::Request::Online::Refund.new(
+    request = EasyWalletPay::Request::Online::Refund.new(
       order_id: '123',
       refund_order_id: 'r_123',
       bank_trade_id: '456',

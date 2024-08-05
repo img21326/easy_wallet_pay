@@ -1,4 +1,4 @@
-RSpec.describe EasyCardPay::Response::Pos::Reversal do
+RSpec.describe EasyWalletPay::Response::Pos::Reversal do
   let(:raw) do
     class Raw
       def status
@@ -11,7 +11,7 @@ RSpec.describe EasyCardPay::Response::Pos::Reversal do
   it 'basic' do
     json_string = '{"status_code":"0000","status_message":"交易成功","px_trade_time": "20210710143259" }'
     json_data = JSON.parse(json_string)
-    res = EasyCardPay::Response::Pos::Reversal.new(json_data, raw)
+    res = EasyWalletPay::Response::Pos::Reversal.new(json_data, raw)
     expect(res.success?).to be true
     expect(res.message).to eq('交易成功')
     expect(res.trade_time).to eq(Time.parse('20210710143259'))

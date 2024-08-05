@@ -1,7 +1,7 @@
 require 'securerandom'
-RSpec.describe EasyCardPay do
+RSpec.describe EasyWalletPay do
   let!(:ec_config) do
-    config = EasyCardPay::Config.new
+    config = EasyWalletPay::Config.new
     config.account = ENV['STORE_ID']
     config.store_name = 'S0006787'
     config.secret_key = ENV['SECRET_KEY']
@@ -9,7 +9,7 @@ RSpec.describe EasyCardPay do
   end
 
   let!(:pos_config) do
-    config = EasyCardPay::Config.new
+    config = EasyWalletPay::Config.new
     config.account = ENV['POS_STORE_ID']
     config.store_name = 'S0006786'
     config.secret_key = ENV['POS_SECRET_KEY']
@@ -19,14 +19,14 @@ RSpec.describe EasyCardPay do
   let(:pos_order_id) { 222_223_333 }
 
   # it 'online_pay' do
-  #   request = EasyCardPay::Request::Online::Pay.new({
+  #   request = EasyWalletPay::Request::Online::Pay.new({
   #                                               order_id: ec_order_id,
   #                                               amount: 1,
   #                                               device_type: :pc,
   #                                               web_confirm_url: 'http://example.com/confirm',
   #                                               web_cancel_url: 'http://example.com/cancel',
-  #                                               notify_url: 'https://istore.weibyapps.com:8123/easy_card_pay/result',
-  #                                               status_url: 'https://istore.weibyapps.com:8123/easy_card_pay/orders'
+  #                                               notify_url: 'https://istore.weibyapps.com:8123/easy_wallet_pay/result',
+  #                                               status_url: 'https://istore.weibyapps.com:8123/easy_wallet_pay/orders'
   #                                             })
   #   request.config = ec_config
   #   res = request.request
@@ -34,7 +34,7 @@ RSpec.describe EasyCardPay do
   # end
 
   # it 'pos_pay' do
-  #   request = EasyCardPay::Request::Pos::Pay.new({
+  #   request = EasyWalletPay::Request::Pos::Pay.new({
   #                                            store_id: 1,
   #                                            store_name: 'weiby_test',
   #                                            pos_id: 1,
@@ -50,7 +50,7 @@ RSpec.describe EasyCardPay do
   # end
 
   # it 'pos_query' do
-  #   request = EasyCardPay::Request::Pos::Query.new({
+  #   request = EasyWalletPay::Request::Pos::Query.new({
   #                                              trade_number: '1#1'
   #                                            })
 

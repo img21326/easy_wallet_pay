@@ -1,6 +1,6 @@
-RSpec.describe EasyCardPay::Request::Pos::Pay do
+RSpec.describe EasyWalletPay::Request::Pos::Pay do
   it 'basic' do
-    request = EasyCardPay::Request::Pos::Pay.new(
+    request = EasyWalletPay::Request::Pos::Pay.new(
       store_id: '123',
       store_name: 'store_name',
       pos_id: '456',
