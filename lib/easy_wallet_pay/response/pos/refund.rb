@@ -4,18 +4,20 @@ module EasyWalletPay
   module Response
     module Pos
       class Refund < Base
-        attr_reader :amount, :discount_amount, :trade_amount
-
-        def carrier
-          @invo_carrier
+        def order_id
+          data&.dig('merchantOrderNo')
         end
 
         def bank_transaction_id
-          @px_trade_no
+          data&.dig('orderNo')
         end
 
-        def trade_number
-          @mer_trade_no
+        def refund_bank_transaction_id
+          data&.dig('refundPaymentNo')
+        end
+
+        def time
+          data&.dig('refundDateTime')
         end
       end
     end

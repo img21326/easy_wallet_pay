@@ -8,7 +8,6 @@ require_relative 'response/online/notify'
 require_relative 'response/pos/pay'
 require_relative 'response/pos/query'
 require_relative 'response/pos/refund'
-require_relative 'response/pos/reversal'
 
 module EasyWalletPay
   module Response

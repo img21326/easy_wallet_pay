@@ -7,42 +7,39 @@ module EasyWalletPay
   module Request
     module Pos
       class Pay < Base
-        def store_id=(store_id)
-          @store_id = store_id.to_s
-        end
+        attr_writer :order_desc, :pay_token
 
-        def store_name=(store_name)
-          @store_name = store_name.to_s
+        def order_id=(order_id)
+          @order_id = order_id.to_s
         end
 
         def pos_id=(pos_id)
           @pos_id = pos_id.to_s
         end
 
-        def trade_number=(trade_number)
-          @trade_number = trade_number.to_s
-        end
-
         def amount=(amount)
           @amount = amount.to_i
         end
 
-        attr_writer :pay_token
-
         private
 
         def to_hash
-          super.merge(
-            store_id: store_id,
-            store_name: @store_name,
-            pos_id: @pos_id,
-            pos_trade_time: @trade_time,
-            mer_trade_no: @trade_number,
-            pay_token: @pay_token,
-            amount: @amount,
-            none_discount_amount: 0,
-            none_feedback_amount: 0
+          hash = super.merge(
+            order: {
+              merchantOrderNo: @order_id,
+              contractNo: config.contract_id,
+              currency: 'TWD',
+              tradeType: 'IMMEDIATE',
+              orderAmount: @amount,
+              rebateNotApplicableAmount: 0,
+              paymentBarCode: @pay_token,
+              orderItems: [],
+              rewardPointsList: []
+            }
           )
+          hash[:order][:posSN] = @pos_id if @pos_id
+          hash[:order][:orderDesc] = @order_desc if @order_desc
+          hash
         end
 
         def response_klass
@@ -50,15 +47,7 @@ module EasyWalletPay
         end
 
         def request_action
-          'Payment'
-        end
-
-        def request_type
-          :post
-        end
-
-        def hash_string
-          [store_id, @pos_id, @trade_time, @trade_number, @pay_token, @amount, request_time].join
+          'createPOSOrder'
         end
       end
     end

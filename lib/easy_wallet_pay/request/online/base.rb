@@ -6,9 +6,8 @@ module EasyWalletPay
   module Request
     module Online
       class Base < EasyWalletPay::Request::Base
-
         private
-        
+
         def request_type
           :post
         end

@@ -2,13 +2,15 @@ RSpec.describe EasyWalletPay::Request::Pos::Query do
   it 'basic' do
     time = Time.now
     request = EasyWalletPay::Request::Pos::Query.new(
-      trade_no_type: :Merchant,
-      trade_number: '123'
+      order_id: '123'
     )
-    req_time = request.send(:request_time)
+    config = EasyWalletPay::Config.new
+    config.store_id = 'store_id'
+    config.contract_id = 'contract_id'
+    request.config = config
+
     hash = request.send(:to_hash)
-    expect(hash).to eq(nil)
-    expect(request.send(:hash_string)).to eq("1123#{req_time}")
-    expect(request.send(:end_point)).to eq("https://uat.EasyWalletPayplus.com/px-pos/OrderStatus/1/123/#{req_time}")
+    expect(hash[:merchantOrderNo]).to eq('123')
+    expect(hash[:contractNo]).to eq('contract_id')
   end
 end
