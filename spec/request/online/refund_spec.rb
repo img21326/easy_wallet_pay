@@ -1,19 +1,18 @@
 RSpec.describe EasyWalletPay::Request::Online::Refund do
   it 'basic' do
+    config = EasyWalletPay::Config.new
+    config.contract_id = 'contract_id'
+    config.executor_id = 'executor_id'
     request = EasyWalletPay::Request::Online::Refund.new(
-      order_id: '123',
-      refund_order_id: 'r_123',
-      bank_trade_id: '456',
-      amount: 100,
-      trade_time: '20170101000000'
+      bank_transaction_id: 'r_123',
+      amount: 100
     )
-    req_time = request.send(:request_time)
+    request.config = config
     hash = request.send(:to_hash)
-    expect(hash[:mer_trade_no]).to eq('123')
-    expect(hash[:amount]).to eq(100)
-    expect(hash[:px_trade_no]).to eq('456')
-    expect(hash[:refund_mer_trade_no]).to eq('r_123')
-    expect(hash[:trade_time]).to eq('20170101000000')
-    expect(request.send(:hash_string)).to eq("12345620170101000000r_123100#{req_time}")
+    expect(hash[:contractNo]).to eq('contract_id')
+    expect(hash[:orderNo]).to eq('r_123')
+    expect(hash[:refundAmount]).to eq(100)
+    expect(hash[:executorId]).to eq('executor_id')
+    expect(hash[:rebateNotApplicableAmount]).to eq(0)
   end
 end

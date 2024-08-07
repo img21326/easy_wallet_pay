@@ -4,26 +4,20 @@ module EasyWalletPay
   module Response
     module Online
       class Refund < Base
-        attr_reader :amount, :discount_amount, :trade_amount
-
-        def bank_trade_id
-          @px_trade_no
-        end
-
-        def bank_refund_trade_id
-          @refund_px_trade_no
-        end
-
         def order_id
-          @mer_trade_no
+          data&.dig('merchantOrderNo')
         end
 
-        def refund_order_id
-          @refund_mer_trade_no
+        def bank_transaction_id
+          data&.dig('orderNo')
         end
 
-        def trade_time
-          @trade_time = Time.parse(@trade_time) if @trade_time.instance_of? String
+        def refund_bank_transaction_id
+          data&.dig('refundPaymentNo')
+        end
+
+        def time
+          data&.dig('refundDateTime')
         end
       end
     end

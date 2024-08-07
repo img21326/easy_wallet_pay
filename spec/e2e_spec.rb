@@ -1,37 +1,54 @@
 require 'securerandom'
 RSpec.describe EasyWalletPay do
-  let!(:ec_config) do
-    config = EasyWalletPay::Config.new
-    config.account = ENV['STORE_ID']
-    config.store_name = 'S0006787'
-    config.secret_key = ENV['SECRET_KEY']
-    config
-  end
+  describe '#ec' do
+    let!(:config) do
+      config = EasyWalletPay::Config.new
+      config.account = ENV['EASY_WALLET_PAY_ACCOUNT']
+      config.store_id = ENV['EASY_WALLET_PAY_STORE_ID']
+      config.store_name = ENV['EASY_WALLET_PAY_STORE_NAME']
+      config.secret_key = ENV['EASY_WALLET_PAY_SECRET_KEY']
+      config.contract_id = ENV['EASY_WALLET_PAY_CONTRACT_ID']
+      config.executor_id = ENV['EASY_WALLET_PAY_EXECUTOR_ID']
+      config
+    end
 
-  let!(:pos_config) do
-    config = EasyWalletPay::Config.new
-    config.account = ENV['POS_STORE_ID']
-    config.store_name = 'S0006786'
-    config.secret_key = ENV['POS_SECRET_KEY']
-    config
-  end
-  let(:ec_order_id) { 'test_1231' }
-  let(:pos_order_id) { 222_223_333 }
+    order_id = SecureRandom.hex(10)
 
-  # it 'online_pay' do
-  #   request = EasyWalletPay::Request::Online::Pay.new({
-  #                                               order_id: ec_order_id,
-  #                                               amount: 1,
-  #                                               device_type: :pc,
-  #                                               web_confirm_url: 'http://example.com/confirm',
-  #                                               web_cancel_url: 'http://example.com/cancel',
-  #                                               notify_url: 'https://istore.weibyapps.com:8123/easy_wallet_pay/result',
-  #                                               status_url: 'https://istore.weibyapps.com:8123/easy_wallet_pay/orders'
-  #                                             })
-  #   request.config = ec_config
-  #   res = request.request
-  #   expect(res.success?).to be(true)
-  # end
+    it 'pay' do
+      request = EasyWalletPay::Request::Online::Pay.new({
+                                                          order_id: order_id,
+                                                          amount: 100,
+                                                          return_url: 'http://example.com/return_url',
+                                                          notify_url: 'http://example.com/notify_url'
+                                                        })
+      request.config = config
+      res = request.request
+      p request.log_data
+      p res.raw
+      expect(res.success?).to be(true)
+      expect(res.order_id).to eq(order_id)
+      expect(res.amount).to eq(100)
+      expect(res.bank_transaction_id).not_to be_nil
+      expect(res.redirect_url).not_to be_nil
+      expect(res.time).not_to be_nil
+    end
+
+    it 'query' do
+      request = EasyWalletPay::Request::Online::Query.new({
+                                                            order_id: order_id
+                                                          })
+      request.config = config
+      res = request.request
+      p request.log_data
+      p res.raw
+      expect(res.success?).to be(true)
+      expect(res.order_id).to eq(order_id)
+      expect(res.amount).to eq(100)
+      expect(res.is_paid?).to be(false)
+      expect(res.is_refund?).to be(false)
+      expect(res.time).not_to be_nil
+    end
+  end
 
   # it 'pos_pay' do
   #   request = EasyWalletPay::Request::Pos::Pay.new({

@@ -7,7 +7,7 @@ require 'easy_wallet_pay/utils'
 module EasyWalletPay
   module Request
     class Base
-      attr_accessor :config
+      attr_accessor :config, :store_id
 
       def initialize(params = nil)
         return unless params.is_a? Hash
@@ -21,14 +21,14 @@ module EasyWalletPay
 
       def request
         raise EasyWalletPay::Error, 'Missing Merchant Account' unless config&.account
-        raise EasyWalletPay::Error, 'Missing Store Name' unless config&.store_name
+        raise EasyWalletPay::Error, 'Missing Store ID' unless config&.store_id
+        raise EasyWalletPay::Error, 'Missing Secret Key' unless config&.secret_key
+        raise EasyWalletPay::Error, 'Missing Contract ID' unless config&.contract_id
 
         res = send_request
         raise EasyWalletPay::Error, "status: #{res.status}, message: #{res.body}" if res.status != 200
 
-        res_json_body = JSON.parse(res.body)
-
-        response_klass.new(res_json_body, res.body)
+        response_klass.new(res.body)
       end
 
       def trade_time=(trade_time)
@@ -45,7 +45,7 @@ module EasyWalletPay
           'end_point' => end_point,
           'request_time' => request_time,
           'request_data' => request_data,
-          'request_header' => request_header
+          'request_header' => request_header,
         }
       end
 
@@ -59,10 +59,6 @@ module EasyWalletPay
         :post
       end
 
-      def hash_string
-        raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
-      end
-
       def request_action
         raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
       end
@@ -74,9 +70,7 @@ module EasyWalletPay
       def request_header
         {
           'Content-Type' => 'application/json;charset=utf-8;',
-          'PX-MerCode' => config.account,
-          'PX-MerEnName' => config.store_name,
-          'PX-SignValue' => sign_value
+          'Authorization' => "HmacSHA256 #{config.account};1;#{sign_value}"
         }
       end
 
@@ -90,7 +84,7 @@ module EasyWalletPay
 
       def to_hash
         {
-          req_time: request_time
+          requestDateTime: request_time
         }
       end
 
@@ -109,7 +103,7 @@ module EasyWalletPay
       end
 
       def sign_value
-        EasyWalletPay::Utils.sign hash_string, config&.secret_key
+        EasyWalletPay::Utils.sign to_hash, config&.secret_key
       end
 
       def api_host

@@ -4,42 +4,38 @@ module EasyWalletPay
   module Response
     module Online
       class Notify < Base
-        attr_reader :amount, :trade_amount, :discount_amount
-
         def order_id
-          @mer_trade_no
-        end
-
-        def bank_trade_id
-          @px_trade_no
+          data&.dig('merchantOrderNo')
         end
 
         def bank_transaction_id
-          @transaction_id
+          data&.dig('orderNo')
+        end
+
+        def paymentNo
+          data&.dig('paymentNo')
+        end
+
+        def time
+          data&.dig('orderCreateDateTime')
+        end
+
+        def amount
+          data&.dig('orderAmount')
+        end
+
+        def rebateNotApplicableAmount
+          data&.dig('rebateNotApplicableAmount')
         end
 
         def carrier
-          @invo_carrier
+          data&.dig('einvoiceCarrier', 'einvoiceCarrierNo')
         end
 
-        def trade_time
-          @trade_time = Time.parse(@trade_time) if @trade_time.instance_of? String
-        end
+        private
 
-        def pay_tool
-          @pay_tool_info.dig('pay_tool')
-        end
-
-        def pay_tool_name
-          @pay_tool_info.dig('tool_name')
-        end
-
-        def card_number
-          @pay_tool_info.dig('identity')
-        end
-
-        def request_time
-          @req_time
+        def data
+          json_data
         end
       end
     end

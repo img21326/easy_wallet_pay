@@ -6,10 +6,11 @@ module EasyWalletPay
   module Request
     module Online
       class Base < EasyWalletPay::Request::Base
-        private
 
-        def api_host
-          "#{config&.api_host}/px-ec"
+        private
+        
+        def request_type
+          :post
         end
       end
     end

@@ -1,26 +1,29 @@
 RSpec.describe EasyWalletPay::Response::Online::Refund do
-  let(:raw) do
-    class Raw
-      def status
-        200
-      end
-    end
-    Raw.new
-  end
-
   it 'basic' do
-    json_string = '{ "status_code": "0000", "status_message": "交易成功", "mer_trade_no":"202101230000002", "px_trade_no": "PXO023892398239", "refund_mer_trade_no":"202101230000001", "refund_px_trade_no": "PXRO023892398239", "trade_time":"20210101093922", "amount": 300, "trade_amount": 277, "discount_amount": 23 }'
+    json_string = '
+      {
+        "returnCode": "00000",
+        "returnMsg": "成功",
+        "data": {
+          "sellerMemberUid": "1084308382",
+          "merchantOrderNo": "108010100201",
+          "orderNo": "10806130438932",
+          "orderStatus": "REFUND_COMPLETED",
+          "refundPaymentNo": "13543124323443",
+          "refundPaymentStatus": "REFUND_COMPLETED",
+          "refundDateTime": "20190617103431"
+        }
+      }
+    '
     json_data = JSON.parse(json_string)
-    res = EasyWalletPay::Response::Online::Refund.new(json_data, raw)
+    res = EasyWalletPay::Response::Online::Refund.new(json_string)
     expect(res.success?).to be true
-    expect(res.message).to eq('交易成功')
-    expect(res.order_id).to eq('202101230000002')
-    expect(res.bank_trade_id).to eq('PXO023892398239')
-    expect(res.refund_order_id).to eq('202101230000001')
-    expect(res.bank_refund_trade_id).to eq('PXRO023892398239')
-    expect(res.trade_time).to eq(Time.parse('20210101093922'))
-    expect(res.amount).to eq(300)
-    expect(res.trade_amount).to eq(277)
-    expect(res.discount_amount).to eq(23)
+    expect(res.message).to eq('成功')
+    expect(res.is_paid?).to be false
+    expect(res.is_refund?).to be true
+    expect(res.order_id).to eq('108010100201')
+    expect(res.bank_transaction_id).to eq('10806130438932')
+    expect(res.refund_bank_transaction_id).to eq('13543124323443')
+    expect(res.time).to eq('20190617103431')
   end
 end

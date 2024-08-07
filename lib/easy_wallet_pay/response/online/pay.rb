@@ -4,10 +4,28 @@ module EasyWalletPay
   module Response
     module Online
       class Pay < Base
-        attr_reader :payment_url, :qrcode
+        def order_id
+          data&.dig('merchantOrderNo')
+        end
 
         def bank_transaction_id
-          @transaction_id
+          data&.dig('orderNo')
+        end
+
+        def payment_id
+          data&.dig('paymentNo')
+        end
+
+        def amount
+          data&.dig('orderAmount')
+        end
+
+        def redirect_url
+          data&.dig('redirectPaymentUrl')
+        end
+
+        def time
+          data&.dig('orderCreateDateTime')
         end
       end
     end

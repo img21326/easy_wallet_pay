@@ -6,13 +6,12 @@ require 'digest'
 module EasyWalletPay
   module Response
     class Base
-      attr_reader :raw, :status_code
+      attr_reader :raw, :status_code, :message
 
-      def initialize(params, raw)
+      def initialize(raw)
         @raw = raw
-        params.each_pair do |key, value|
-          instance_variable_set("@#{key}", value)
-        end
+        @status_code = json_data&.dig('returnCode')
+        @message = json_data&.dig('returnMsg')
       end
 
       def status
@@ -24,13 +23,31 @@ module EasyWalletPay
       def success?
         return false unless @status_code
 
-        @status_code == '0000'
+        @status_code == '00000'
       end
 
-      def message
-        return @status_message unless @status_message.nil?
+      def order_status
+        data&.dig('orderStatus')
+      end
 
+      def is_paid?
+        %w[PAYMENT_RECEIVED COMPLETED].include?(order_status)
+      end
+
+      def is_refund?
+        %w[REFUND_COMPLETED ORDER_CANCEL].include?(order_status)
+      end
+
+      private 
+
+      def json_data
+        @json_data ||= JSON.parse(raw)
+      rescue StandardError
         nil
+      end
+
+      def data
+        json_data&.dig('data')
       end
     end
   end
