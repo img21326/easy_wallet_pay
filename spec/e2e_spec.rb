@@ -18,7 +18,7 @@ RSpec.describe EasyWalletPay do
       request = EasyWalletPay::Request::Online::Pay.new({
                                                           order_id: order_id,
                                                           amount: 100,
-                                                          return_url: 'http://example.com/return_url',
+                                                          confirm_url: 'http://example.com/confirm_url',
                                                           notify_url: 'http://example.com/notify_url'
                                                         })
       request.config = config
@@ -29,7 +29,7 @@ RSpec.describe EasyWalletPay do
       expect(res.order_id).to eq(order_id)
       expect(res.amount).to eq(100)
       expect(res.bank_transaction_id).not_to be_nil
-      expect(res.redirect_url).not_to be_nil
+      expect(res.payment_url).not_to be_nil
       expect(res.time).not_to be_nil
     end
 

@@ -26,7 +26,10 @@ module EasyWalletPay
         raise EasyWalletPay::Error, 'Missing Contract ID' unless config&.contract_id
 
         res = send_request
-        raise EasyWalletPay::Error, "status: #{res.status}, message: #{res.body}" if res.status != 200
+        unless res.status.to_s.start_with? '2'
+          raise EasyWalletPay::Error,
+                "status: #{res.status}, message: #{res.body}"
+        end
 
         response_klass.new(res.body)
       end
@@ -45,7 +48,7 @@ module EasyWalletPay
           'end_point' => end_point,
           'request_time' => request_time,
           'request_data' => request_data,
-          'request_header' => request_header,
+          'request_header' => request_header
         }
       end
 

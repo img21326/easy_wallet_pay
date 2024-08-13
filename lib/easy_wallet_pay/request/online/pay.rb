@@ -7,7 +7,7 @@ module EasyWalletPay
   module Request
     module Online
       class Pay < Base
-        attr_writer :return_url, :notify_url, :order_desc
+        attr_writer :confirm_url, :notify_url, :order_desc
 
         def order_id=(order_id)
           @order_id = order_id.to_s
@@ -21,7 +21,7 @@ module EasyWalletPay
 
         def to_hash
           hash = super.merge(
-            callBackUrl: @return_url,
+            callBackUrl: @confirm_url,
             notifyUrl: @notify_url,
             merchantStoreId: config.store_id,
             order: {

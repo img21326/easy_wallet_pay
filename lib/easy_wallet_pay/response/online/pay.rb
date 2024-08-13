@@ -20,7 +20,7 @@ module EasyWalletPay
           data&.dig('orderAmount')
         end
 
-        def redirect_url
+        def payment_url 
           data&.dig('redirectPaymentUrl')
         end
 

@@ -12,7 +12,7 @@ module EasyWalletPay
           data&.dig('orderNo')
         end
 
-        def paymentNo
+        def payment_id
           data&.dig('paymentNo')
         end
 

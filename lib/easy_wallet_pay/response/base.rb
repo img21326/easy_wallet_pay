@@ -34,8 +34,16 @@ module EasyWalletPay
         %w[PAYMENT_RECEIVED COMPLETED].include?(order_status)
       end
 
+      def is_refunding?
+        %w[REFUND_PROCESSING].include?(order_status)
+      end
+
       def is_refund?
-        %w[REFUND_COMPLETED ORDER_CANCEL].include?(order_status)
+        %w[REFUND_COMPLETED].include?(order_status)
+      end
+
+      def is_cancel?
+        %w[CANCELLED].include?(order_status)
       end
 
       private 

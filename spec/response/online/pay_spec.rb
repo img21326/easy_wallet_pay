@@ -28,7 +28,7 @@ RSpec.describe EasyWalletPay::Response::Online::Pay do
     expect(res.bank_transaction_id).to eq('10806130438932')
     expect(res.payment_id).to eq('18431982394638')
     expect(res.amount).to eq(110)
-    expect(res.redirect_url).to eq('http://uupay.com.tw/LAKDJF0943983KDA0D928')
+    expect(res.payment_url).to eq('http://uupay.com.tw/LAKDJF0943983KDA0D928')
     expect(res.time).to eq('20190612153250')
   end
 end
