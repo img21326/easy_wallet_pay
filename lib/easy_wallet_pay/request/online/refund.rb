@@ -33,7 +33,7 @@ module EasyWalletPay
         end
 
         def request_action
-          'Refund'
+          'refundECOrder'
         end
       end
     end
