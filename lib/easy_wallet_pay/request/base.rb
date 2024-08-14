@@ -106,7 +106,7 @@ module EasyWalletPay
       end
 
       def sign_value
-        EasyWalletPay::Utils.sign to_hash, config&.secret_key
+        EasyWalletPay::Utils.sign to_hash.to_json, config&.secret_key
       end
 
       def api_host

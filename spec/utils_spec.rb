@@ -4,7 +4,7 @@ RSpec.describe EasyWalletPay do
     data = {
       a: '1',
       b: '2'
-    }
+    }.to_json
 
     should_be = '5b163d6f650c23586df7da138fce8c3695b49548879482b4f7d4faa7f8261e57'
     expect(EasyWalletPay::Utils.sign(data, secret_key)).to eq(should_be)
