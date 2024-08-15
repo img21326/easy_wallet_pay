@@ -27,12 +27,15 @@ module EasyWalletPay
 
         def to_hash
           hash = super.merge(
-            merchantOrderNo: @order_id,
             contractNo: config.contract_id,
-            orderNo: @bank_transaction_id,
             refundAmount: @amount,
             rebateNotApplicableAmount: 0
           )
+          if @bank_transaction_id.present?
+            hash[:orderNo] = @bank_transaction_id
+          else
+            hash[:merchantOrderNo] = @order_id
+          end
           hash[:posSN] = @pos_id if @pos_id
           hash
         end

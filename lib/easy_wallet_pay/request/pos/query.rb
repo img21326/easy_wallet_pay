@@ -11,13 +11,22 @@ module EasyWalletPay
           @order_id = order_id.to_s
         end
 
+        def bank_transaction_id=(bank_transaction_id)
+          @bank_transaction_id = bank_transaction_id.to_s
+        end
+
         private
 
         def to_hash
-          super.merge({
-                        merchantOrderNo: @order_id,
-                        contractNo: config.contract_id
-                      })
+          hash = super.merge(
+            contractNo: config.contract_id
+          )
+          if @bank_transaction_id.present?
+            hash[:orderNo] = @bank_transaction_id
+          else
+            hash[:merchantOrderNo] = @order_id
+          end
+          hash
         end
 
         def response_klass
@@ -25,6 +34,8 @@ module EasyWalletPay
         end
 
         def request_action
+          return 'queryOrder' if @bank_transaction_id.present?
+
           'queryMerchantOrder'
         end
       end
