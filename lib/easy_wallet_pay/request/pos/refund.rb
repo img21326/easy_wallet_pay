@@ -31,7 +31,7 @@ module EasyWalletPay
             refundAmount: @amount,
             rebateNotApplicableAmount: 0
           )
-          if @bank_transaction_id.present?
+          if @bank_transaction_id != nil
             hash[:orderNo] = @bank_transaction_id
           else
             hash[:merchantOrderNo] = @order_id

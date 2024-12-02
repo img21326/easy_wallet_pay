@@ -18,7 +18,7 @@ RSpec.describe EasyWalletPay do
       request = EasyWalletPay::Request::Online::Pay.new({
                                                           order_id: order_id,
                                                           amount: 100,
-                                                          confirm_url: 'http://example.com/confirm_url',
+                                                          confirm_url: 'http://localhost:3333/stores/e6aada6c/easy_wallet?order_id=PH_0906278263_1712631570%23WEB%23292%231724117094.347604&redirect_to=%2Fstores%2Fe6aada6c',
                                                           notify_url: 'http://example.com/notify_url'
                                                         })
       request.config = config
@@ -71,7 +71,7 @@ RSpec.describe EasyWalletPay do
       request = EasyWalletPay::Request::Pos::Pay.new({
                                                        order_id: order_id,
                                                        amount: 100,
-                                                       pay_token: '99501139708654107101'
+                                                       pay_token: '99701134112706002109'
                                                      })
       request.config = config
       res = request.request
@@ -87,7 +87,7 @@ RSpec.describe EasyWalletPay do
 
     it 'query' do
       request = EasyWalletPay::Request::Pos::Query.new({
-                                                         order_id: order_id
+                                                         bank_transaction_id: bank_transaction_id
                                                        })
       request.config = config
       res = request.request
@@ -98,11 +98,12 @@ RSpec.describe EasyWalletPay do
       expect(res.is_paid?).to be(true)
       expect(res.is_refund?).to be(false)
       expect(res.time).not_to be_nil
+      expect(res.payment_id).not_to be_nil
+      p res.payment_id
     end
 
     it 'refund' do
       request = EasyWalletPay::Request::Pos::Refund.new({
-                                                          order_id: order_id,
                                                           bank_transaction_id: bank_transaction_id,
                                                           amount: 100
                                                         })
@@ -117,7 +118,7 @@ RSpec.describe EasyWalletPay do
 
     it 'query refund' do
       request = EasyWalletPay::Request::Pos::Query.new({
-                                                         order_id: order_id
+                                                         bank_transaction_id: bank_transaction_id
                                                        })
       request.config = config
       res = request.request

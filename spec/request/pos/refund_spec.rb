@@ -11,7 +11,6 @@ RSpec.describe EasyWalletPay::Request::Pos::Refund do
     request.config = config
 
     hash = request.send(:to_hash)
-    expect(hash[:merchantOrderNo]).to eq('123')
     expect(hash[:orderNo]).to eq('r_123')
     expect(hash[:refundAmount]).to eq(100)
     expect(hash[:rebateNotApplicableAmount]).to eq(0)

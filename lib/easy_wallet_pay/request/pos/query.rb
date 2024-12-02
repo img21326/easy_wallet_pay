@@ -21,7 +21,7 @@ module EasyWalletPay
           hash = super.merge(
             contractNo: config.contract_id
           )
-          if @bank_transaction_id.present?
+          if @bank_transaction_id != nil
             hash[:orderNo] = @bank_transaction_id
           else
             hash[:merchantOrderNo] = @order_id
@@ -30,11 +30,11 @@ module EasyWalletPay
         end
 
         def response_klass
-          EasyWalletPay::Response::Online::Query
+          EasyWalletPay::Response::Pos::Query
         end
 
         def request_action
-          return 'queryOrder' if @bank_transaction_id.present?
+          return 'queryOrder' if @bank_transaction_id != nil
 
           'queryMerchantOrder'
         end

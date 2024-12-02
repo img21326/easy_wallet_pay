@@ -24,6 +24,17 @@ module EasyWalletPay
           data&.dig('einvoiceCarrier', 'einvoiceCarrierNo')
         end
 
+        def payment_id
+          payment_records&.map{ |record| record['paymentNo'] }&.join(',') || ''
+        end
+
+        def payment_records
+          data&.dig('paymentDetail')&.filter do |detail|
+            detail['paymentStatus'] == 'PAYMENT_RECEIVED' ||
+              detail['paymentStatus'] == 'COMPLETED'
+          end
+        end
+
         def refund_bank_transaction_id
           refund_record&.last&.dig('paymentNo')
         end
